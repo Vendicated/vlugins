@@ -1,0 +1,10 @@
+.vc-uni-table {
+    display: grid;
+    gap: 1em;
+}
+
+.vc-uni-row {
+    display: flex;
+    gap: 1em;
+    font-family: var(--font-code, monospace);
+}
