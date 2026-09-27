@@ -42,7 +42,12 @@ export function prepareDB() {
 }
 
 export async function checkGithubUser(username: string, transactionId: string, ctx: Context) {
-    const { id: githubAccountId } = await fetchJson(`https://api.github.com/users/${username}`);
+    const { id: githubAccountId } = await fetchJson(`https://api.github.com/users/${username}`, {
+        headers: {
+            "User-Agent": "Vencord Sponsor Helper",
+            "Authorization": `BEARER ${process.env.HUBBER}`
+        }
+    });
 
     prepareDB();
 

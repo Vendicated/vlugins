@@ -23,7 +23,7 @@ function parseDollarAmountInCent(amount: string) {
     return parseFloat(amount.replace(/[$,]/g, "")) * 100;
 }
 
-export async function findSponsorData(username: string, transactionId: string): Promise<SponsorData | null> {
+export async function findSponsorData(transactionId: string): Promise<SponsorData | null> {
     const { headers, rows } = parseHeadersAndRows(await readFile(SPONSORS_CSV_PATH, "utf-8"));
 
     const makeColumnGetter = (header: string) => {
@@ -37,8 +37,11 @@ export async function findSponsorData(username: string, transactionId: string): 
     const getProcessedAmount = makeColumnGetter("Processed Amount");
     const getSponsorshipStartedOn = makeColumnGetter("Sponsorship Started On");
 
-    const entry = rows.find(row => getUsername(row) === username && getTransactionId(row) === transactionId);
+    const entry = rows.find(row => getTransactionId(row) === transactionId);
     if (!entry) return null;
+
+    const username = getUsername(entry);
+    if (!username) return null;
 
     const entries = rows.filter(row => getUsername(row) === username);
     if (!entries.length) return null;

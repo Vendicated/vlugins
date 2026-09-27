@@ -51,12 +51,12 @@ export async function checkReceipt(_event: IpcMainInvokeEvent, receiptFileURL: s
         throw new Error("Invalid receipt file");
     }
 
-    const data = await findSponsorData(githubUsername, transactionId);
+    const data = await findSponsorData(transactionId);
     if (!data) {
         throw new Error("No sponsorship data found for this receipt");
     }
 
-    const ids = await checkGithubUser(githubUsername, transactionId, ctx);
+    const ids = await checkGithubUser(data.username, transactionId, ctx);
 
     return { createdByPrawn, date, githubUsername, transactionId, data, ids };
 }
